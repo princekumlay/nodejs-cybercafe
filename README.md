@@ -46,14 +46,14 @@ Cybercafe-Backend/
 
 ## API Endpoints
 
-# People
+## People
 Create: POST /people
 Read: GET /people
 Read: GET /people:gender
 Update: PUT /people/:id
 Delete: DELETE /people/:id
 
-# Customer
+## Customer
 Create: POST /customer
 Read: GET /customer
 Read: GET /customer:gender
