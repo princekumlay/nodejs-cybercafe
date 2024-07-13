@@ -36,11 +36,11 @@ Cybercafe-Backend/
 ├── db.js # Database connection file
 ├── index.js # Entry point of the application
 ├── models/
-│ ├── people.js # People schema
-│ └── customer.js # Customer schema
+│ ├── peopleSchema.js # People schema
+│ └── customerSchema.js # Customer schema
 ├── routes/
-│ ├── people.js # People router
-│ └── customer.js # Customer router
+│ ├── peopleRouter.js # People router
+│ └── customerRouter.js # Customer router
 ├── package.json # Project dependencies and scripts
 └── README.md # Project documentation
 
@@ -49,11 +49,13 @@ Cybercafe-Backend/
 # People
 Create: POST /people
 Read: GET /people
+Read: GET /people:gender
 Update: PUT /people/:id
 Delete: DELETE /people/:id
 
 # Customer
 Create: POST /customer
 Read: GET /customer
+Read: GET /customer:gender
 Update: PUT /customer/:id
 Delete: DELETE /customer/:id
