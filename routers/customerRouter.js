@@ -19,12 +19,12 @@ router.post('/', async (req, res) => {
         const response = await newCustomer.save();
 
         console.log('data saved successfully to Customer schema');
-        res.status(200).json(response);
+        res.json(response);
 
 
     } catch (error) {
         console.log('error caught savingCustomer data')
-        res.status(400).json({ message: error.message });
+        res.json({ message: error.message });
     }
 });
 
@@ -36,12 +36,12 @@ router.get('/', async (req, res) => {
 
         
             console.log('Customer data fetched successfylly')
-             res.status(200).json(data)
+             res.json(data)
     
           
     } catch (error) {
         console.log('error caught in getting Customer data')
-        res.status(400).json({ message: error.message });
+        res.json({ message: error.message });
     }
 });
 
@@ -56,15 +56,15 @@ router.get('/:gender', async(req, res) => {
         if(genderfind == 'male' || genderfind == 'female' || genderfind == 'other'){
             const response = await Customer.find({gender: genderfind});
             console.log(`data found for ${genderfind} in a customer collection`);
-            res.status(200).json(response);
+            res.json(response);
         }
         else{
             console.log('gender not matched');
-            res.status(400).json({message: 'provide a valid gender'});
+            res.json({message: 'provide a valid gender'});
         }
     } catch (error) {
         console.log('error caught in gender oriented data');
-        res.status(500).json({message: error});
+        res.json({message: error});
     };
 });
 
@@ -82,16 +82,16 @@ router.put('/:id', async(req, res) => {
         
         if(!response){
             console.log('provide a valid ID');
-            return res.status(400).json({message: 'Invalid Id'});
+            return res.json({message: 'Invalid Id'});
            
         }
         
             console.log(`data updated successfully for ${req.params.id} in customer collection`);
-            res.status(200).json(response);
+            res.json(response);
 
     } catch (error) {
         console.log('error updating customer data');
-        res.status(500).json({message: error.message});
+        res.json({message: error.message});
     }
 });
 
@@ -110,15 +110,15 @@ router.delete('/:id', async(req, res) => {
 
         if(!response){
             console.log('data not found corresponding to the ID');
-            res.status(404).json({message: 'provide a valid Id'});
+            res.json({message: 'provide a valid Id'});
         }
         else{
             console.log(`data deleted successfully for ${customerId} from customer collection`);
-            res.status(200).json(response);
+            res.json(response);
         }
     } catch (error) {
         console.log('error caught deleting data from customer collection');
-        res.status(500).json({message: error});
+        res.json({message: error});
     }
 });
 

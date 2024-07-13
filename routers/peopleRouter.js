@@ -19,12 +19,12 @@ router.post('/', async (req, res) => {
         const response = await newPeople.save();
 
         console.log('data saved successfully to People schema');
-        res.status(200).json(response);
+        res.json(response);
 
 
     } catch (error) {
         console.log('error caught saving People data')
-        res.status(400).json({ message: error.message });
+        res.json({ message: error.message });
     }
 });
 
@@ -36,11 +36,11 @@ router.get('/', async (req, res) => {
 
 
         console.log('People data fetched successfylly')
-        res.status(200).json(data)
+        res.json(data)
 
     } catch (error) {
         console.log('error caught in getting People data')
-        res.status(400).json({ message: error.message });
+        res.json({ message: error.message });
     }
 });
 
@@ -54,15 +54,15 @@ router.get('/:gender', async(req, res) => {
         if(genderfind == 'male' || genderfind == 'female' || genderfind == 'transgender' || genderfind == 'other'){
             const response = await People.find({gender: genderfind});
             console.log(`data found for ${genderfind} in a people collection`);
-            res.status(200).json(response);
+            res.json(response);
         }
         else{
             console.log('gender not matched');
-            res.status(400).json({message: 'provide a valid gender'});
+            res.json({message: 'provide a valid gender'});
         }
     } catch (error) {
         console.log('error caught in gender oriented data');
-        res.status(500).json({message: error});
+        res.json({message: error});
     };
 });
 
@@ -81,15 +81,15 @@ router.put('/:id', async(req, res) => {
         
         if(response){
             console.log(`data updated successfully for ${peopleId} in people collection`);
-            res.status(200).json(response);
+            res.json(response);
         }
         else{
             console.log('provide a valid ID');
-            res.status(400).json({message: 'Invalid Id'});
+            res.json({message: 'Invalid Id'});
         }
     } catch (error) {
         console.log('error updating people data');
-        res.status(500).json({message: error});
+        res.json({message: error});
     }
 });
 
@@ -106,15 +106,15 @@ router.delete('/:id', async(req, res) => {
 
             if(!response){
                 console.log('data not found corresponding to the ID');
-                res.status(404).json({message: 'provide a valid Id'});
+                res.json({message: 'provide a valid Id'});
             }
             else{
                 console.log(`data deleted successfully for ${peopleId} from people collection`);
-                res.status(200).json(response);
+                res.json(response);
             }
         } catch (error) {
             console.log('error caught deleting data from person collection');
-            res.status(500).json({message: error});
+            res.json({message: error});
         }
 });
 
