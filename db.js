@@ -8,8 +8,8 @@ require('dotenv').config();
 //now we will define the URL of the database
 // const URL = "mongodb://localhost:27017/CyberCafe";
 
-// const URL = process.env.LOCALURL;
-const URL = process.env.ONLINEURL;
+const URL = process.env.LOCALURL;
+// const URL = process.env.ONLINEURL;
 
 //now we will establish a connection to the database
 //it will initialize the connection but not actually connect to the database
