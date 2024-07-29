@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const People = require('../models/peopleSchema');
+const passport = require('../authentication/auth')
 
 //now we are ready to create the routes for the People
 //first we will define the post endpoint
@@ -29,7 +30,7 @@ router.post('/', async (req, res) => {
 });
 
 //defining route to fetch the data of the People schema
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('local'), async (req, res) => {
     try {
         //fetching data from database
         const data = await People.find();
@@ -45,7 +46,7 @@ router.get('/', async (req, res) => {
 });
 
 //defining parameterised API calls for the people collection
-router.get('/:gender', async(req, res) => {
+router.get('/:gender', passport.authenticate('local'), async(req, res) => {
     try {
         //first we get the value of gender from the request
         const genderfind = req.params.gender;
@@ -94,40 +95,40 @@ router.put('/:id', async(req, res) => {
 });
 
 
-//defining a delete endpoint for the people collection
-//for deleting data of the people we need delete request
-router.delete('/:id', async(req, res) => {
-        try {
-            //first extract the id
-            const peopleId = req.params.id;
+// //defining a delete endpoint for the people collection
+// //for deleting data of the people we need delete request
+// router.delete('/:id', async(req, res) => {
+//         try {
+//             //first extract the id
+//             const peopleId = req.params.id;
 
-            //deleting people data
-            const response = await People.findByIdAndDelete(peopleId);
+//             //deleting people data
+//             const response = await People.findByIdAndDelete(peopleId);
 
-            if(!response){
-                console.log('data not found corresponding to the ID');
-                res.json({message: 'provide a valid Id'});
-            }
-            else{
-                console.log(`data deleted successfully for ${peopleId} from people collection`);
-                res.json(response);
-            }
-        } catch (error) {
-            console.log('error caught deleting data from person collection');
-            res.json({message: error});
-        }
-});
+//             if(!response){
+//                 console.log('data not found corresponding to the ID');
+//                 res.json({message: 'provide a valid Id'});
+//             }
+//             else{
+//                 console.log(`data deleted successfully for ${peopleId} from people collection`);
+//                 res.json(response);
+//             }
+//         } catch (error) {
+//             console.log('error caught deleting data from person collection');
+//             res.json({message: error});
+//         }
+// });
 
-// // Route to delete a person by ID
-// router.delete('/:id', async (req, res) => {
-//     try {
-//       const people = await People.findByIdAndDelete(req.params.id);
-//       if (!people) return res.status(404).json({ message: 'people not found' });
-//       res.json({ message: 'People deleted successfully' });
-//     } catch (error) {
-//       res.status(500).json({ message: error.message });
-//     }
-//   });
+// Route to delete a person by ID
+router.delete('/:id', async (req, res) => {
+    try {
+      const people = await People.findByIdAndDelete(req.params.id);
+      if (!people) return res.status(404).json({ message: 'people not found' });
+      res.status(200).json({ message: 'People deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 
 // now we have to export the router

@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require('../models/customerSchema');
+const passport = require('../authentication/auth');
 
 //now we are ready to create the routes for theCustomer
 //first we will define the post endpoint
@@ -29,7 +30,7 @@ router.post('/', async (req, res) => {
 });
 
 //defining route to fetch the data of theCustomer schema
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('local'), async (req, res) => {
     try {
         //fetching data from database
         const data = await Customer.find();
@@ -47,7 +48,7 @@ router.get('/', async (req, res) => {
 
 
 //defining parameterised API calls for the people collection
-router.get('/:gender', async(req, res) => {
+router.get('/:gender', passport.authenticate('local'), async(req, res) => {
     try {
         //first we get the value of gender from the request
         const genderfind = req.params.gender;
@@ -98,30 +99,44 @@ router.put('/:id', async(req, res) => {
 
 
 
-//defining a delete endpoint for the people collection
-//for deleting data of the people we need delete request
+// //defining a delete endpoint for the people collection
+// //for deleting data of the people we need delete request
+// router.delete('/:id', async(req, res) => {
+//     try {
+//         //first extract the id
+//         const customerId = req.params.id;
+
+//         //deleting customer data
+//         const response = await Customer.findByIdAndDelete(customerId);
+
+//         if(!response){
+//             console.log('data not found corresponding to the ID');
+//             res.json({message: 'provide a valid Id'});
+//         }
+//         else{
+//             console.log(`data deleted successfully for ${customerId} from customer collection`);
+//             res.json(response);
+//         }
+//     } catch (error) {
+//         console.log('error caught deleting data from customer collection');
+//         res.json({message: error});
+//     }
+// });
+
+
+//route to delete the customer data
 router.delete('/:id', async(req, res) => {
     try {
-        //first extract the id
-        const customerId = req.params.id;
+        const customer = await Customer.findByIdAndDelete(req.params.id);
+        
+        //checking customer is found or not
+        if(!customer) return res.status(404).json({message: 'customer not found'});
 
-        //deleting customer data
-        const response = await Customer.findByIdAndDelete(customerId);
-
-        if(!response){
-            console.log('data not found corresponding to the ID');
-            res.json({message: 'provide a valid Id'});
-        }
-        else{
-            console.log(`data deleted successfully for ${customerId} from customer collection`);
-            res.json(response);
-        }
+        res.status(200).json('customer data deleted successfully' + {customer});
     } catch (error) {
-        console.log('error caught deleting data from customer collection');
-        res.json({message: error});
+        res.status(500).json({error: error});
     }
-});
-
+})
 
 // now we have to export the router
 module.exports = router;
