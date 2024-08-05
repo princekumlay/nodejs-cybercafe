@@ -13,6 +13,7 @@ const bcrypt = require('bcrypt');
 //**************let make this strategy work for more than one collection */
 passport.use(new localStrategy(async(username, pass, done) => {
     try {
+
         console.log('query made for :' + username);// it is just to check the username
 
 
@@ -41,7 +42,7 @@ passport.use(new localStrategy(async(username, pass, done) => {
         //finding the user in the database based on the name provided and stored in the user variable
         // const user = await People.findOne({username: username});
         // console.log('passed the await function');
-        console.log({user: user},{collectionName});
+        // console.log({user: user},{collectionName});
 
         if(!user)//when user not found then this conditional statement will work
             return done(null, false,{message: 'Incorrect username'});
@@ -56,7 +57,7 @@ passport.use(new localStrategy(async(username, pass, done) => {
         const isPasswordMatch = await bcrypt.compare(pass, user.password);
 
         if(isPasswordMatch){
-            console.log('password matched')
+            console.log('password matched 12')
             return done(null, user);
         }
         else{
@@ -68,7 +69,7 @@ passport.use(new localStrategy(async(username, pass, done) => {
 
         
     } catch (error) {
-        console.log('error caught');
+        console.log('provide a username and password for authentication');
         return done(error);
     };
 
@@ -111,54 +112,3 @@ passport.deserializeUser(async(id, done) => {
 })
 
 module.exports = passport;
-
-
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-// const bcrypt = require('bcrypt');
-// const People = require('../models/peopleSchema');
-
-// passport.use(new LocalStrategy(async (username, password, done) => {
-//     try {
-//         console.log(username, password);
-//         const user = await People.find({ username: username });
-
-//         console.log('user not found');
-
-//         if (!user) {
-//             return done(null, false, { message: 'Incorrect username' });
-//         }
-//         console.log('user found');
-        
-
-//         // Compare hashed passwords
-//         const isPasswordMatch = await bcrypt.compare(password, user.password);
-//         console.log('password compared');
-
-//         if (isPasswordMatch) {
-//             console.log('password matched');
-//             return done(null, user);
-//         } else {
-//             console.log('password does not match');
-//             return done(null, false, { message: 'Incorrect password' });
-//         }
-//     } catch (error) {
-//         console.log('error caught');
-//         return done(error);
-//     }
-// }));
-
-// passport.serializeUser((user, done) => {
-//     done(null, user.id);
-// });
-
-// passport.deserializeUser(async (id, done) => {
-//     try {
-//         const user = await People.findById(id);
-//         done(null, user);
-//     } catch (error) {
-//         done(error);
-//     }
-// });
-
-// module.exports = passport;

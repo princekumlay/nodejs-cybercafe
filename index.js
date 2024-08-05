@@ -22,6 +22,9 @@ db;
 
 //THIS STEP WILL CONVERT ANY KIND OF INCOMING DATA IN REQUEST BODY IN JS OBJECT FORMAT
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 // Session setup
 app.use(session({
@@ -58,7 +61,7 @@ app.use(logmiddleware);
 // --------- PASSPORT.JS-----------------------------
 //It is used for the authentication in the app
 //now we create a variable so that we can use passport for the authentication
-const localAuthMiddleware = passport.authenticate('local', {session: true});
+// const localAuthMiddleware = passport.authenticate('local', {session: true});
 //now we can pass this variable to the endpoint to use the authetication
 // app.use(localAuthMiddleware);
 
