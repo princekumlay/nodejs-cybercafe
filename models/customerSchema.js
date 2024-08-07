@@ -6,10 +6,10 @@ const bcrypt = require('bcrypt');
 
 //------------------------------------------------ SCHEMAS
 const CustomerSchema = new mongoose.Schema({
-    customerId : {
-        type : Number,
-        require : true,
-        unique : true
+    customerId: {
+        type: Number,
+        require: true,
+        unique: true
     },
     username: {
         type: String,
@@ -19,17 +19,17 @@ const CustomerSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    name : {
-        type : String,
-        require : true,
-        maxlength : 20
+    name: {
+        type: String,
+        require: true,
+        maxlength: 20
     },
     age: {
         type: Number,
         min: 18
     },
     gender: {
-        type: String, 
+        type: String,
         enum: ['male', 'female', 'other']
     }
 });
@@ -38,11 +38,11 @@ const CustomerSchema = new mongoose.Schema({
 
 //------------------------------------- PRE HOOK AND FUNCTION FOR HASHING FUNCTION
 //defining pre hook which will work before the save operation
-CustomerSchema.pre('save', async function(next) {
+CustomerSchema.pre('save', async function (next) {
     console.log('pre hook is activated');
 
     //if password does not manipulated 
-    if(!this.isModified('password') || !this.isNew) return next();
+    if (!this.isModified('password') || !this.isNew) return next();
 
     try {
         this.password = await bcrypt.hash(this.password, 10);
@@ -53,7 +53,7 @@ CustomerSchema.pre('save', async function(next) {
 })
 
 //function to hashed the password if there is change in the customer data
-CustomerSchema.statics.hashPassword = async function(password){
+CustomerSchema.statics.hashPassword = async function (password) {
     return bcrypt.hash(password, 10);
 }
 

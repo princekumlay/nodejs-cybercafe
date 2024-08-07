@@ -86,14 +86,14 @@ router.put('/update/:id', jwtAuthMiddleware, async (req, res) => {
 
         //these 4-5 lines of code is hashed the password when the data of the people is updated
         //extracting data of the people from req body with password
-        const {password, ...otherUpdates} = req.body;
+        const { password, ...otherUpdates } = req.body;
         //assigning otherUpdates to updates
         let updates = otherUpdates;
         // console.log(updates, password);
         //hashing the password using the hashPassword function from PeopleSchema
-        if(password){
+        if (password) {
             const hashedPassword = await People.hashPassword(password);
-            updates = {...otherUpdates, password: hashedPassword};
+            updates = { ...otherUpdates, password: hashedPassword };
         }
 
 
@@ -151,7 +151,7 @@ router.post('/login', async (req, res) => {
         // console.log(password, user.password);
         // checking the password using the bcrypt compare function
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(401).json({ error: 'Incorrect Password' }); 
+        if (!isMatch) return res.status(401).json({ error: 'Incorrect Password' });
 
         // if password is matched then payload is created
         const payload = {
@@ -161,17 +161,17 @@ router.post('/login', async (req, res) => {
 
         //generate token is called from jwt.js for token creation
         const token = generateToken(payload);
-        res.status(200).json({token: token});
+        res.status(200).json({ token: token });
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: error});
+        res.status(500).json({ error: error });
     };
 
 });
 
 //route to access the particular profile 
-router.get('/profile', jwtAuthMiddleware, async(req, res) => {
+router.get('/profile', jwtAuthMiddleware, async (req, res) => {
     try {
         //jwtAuthMiddleware will provide the decoded user data in the req.user
         const userData = req.user;
@@ -180,9 +180,9 @@ router.get('/profile', jwtAuthMiddleware, async(req, res) => {
         const userId = userData.id;
         const user = await People.findById(userId);
 
-        res.status(200).json({user});
+        res.status(200).json({ user });
     } catch (error) {
-        res.status(500).json({error: error});
+        res.status(500).json({ error: error });
     }
 });
 

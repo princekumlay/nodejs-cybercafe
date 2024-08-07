@@ -39,11 +39,11 @@ const PeopleSchema = new mongoose.Schema({
 //-------------------------------------------- PRE HOOK AND FUNCTION TO HASHED PASSWORD
 //pre hook to hashed the password of the new people or if password is modified
 //"this" refers to the people for which query made
-PeopleSchema.pre('save', async function(next) {
+PeopleSchema.pre('save', async function (next) {
     console.log('pre hook activated');
 
     //checing for modification in password 
-    if(!this.isModified('password') || !this.isNew) return next();
+    if (!this.isModified('password') || !this.isNew) return next();
 
     try {
         this.password = await bcrypt.hash(this.password, 10);
@@ -54,7 +54,7 @@ PeopleSchema.pre('save', async function(next) {
 })
 
 //function for hashing the password when data of the people is updated
-PeopleSchema.statics.hashPassword = async function(password){
+PeopleSchema.statics.hashPassword = async function (password) {
     return bcrypt.hash(password, 10);
 }
 
